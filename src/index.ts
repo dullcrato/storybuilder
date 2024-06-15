@@ -1,1 +1,1 @@
-export { default } from './ActionButton';
+export { default as StoryBuilder } from "./components/StoryBuilder";

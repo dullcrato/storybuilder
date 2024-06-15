@@ -20,8 +20,9 @@ const config: StorybookConfig = {
     reactDocgen: 'react-docgen-typescript',
     reactDocgenTypescriptOptions: {
       shouldExtractLiteralValuesFromEnum: true,
-      // 👇 Default prop filter, which excludes props from node_modules
-      propFilter: (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
+      shouldRemoveUndefinedFromOptional: true,
+      skipChildrenPropWithoutDoc: false,
+      propFilter: (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true)
     },
   },
 };

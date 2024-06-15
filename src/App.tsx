@@ -1,4 +1,4 @@
-import StoryBuilder from './StoryBuilder.tsx';
+import StoryBuilder from './components/StoryBuilder.js';
 
 const App = ({children}: any) => {
   return (

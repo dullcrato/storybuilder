@@ -9,7 +9,7 @@ import './StoryBuilder.scss';
 const STYLE_NAMESPACE = 'vcp-story-builder';
 const DEFAULT_KEYS = ['label', 'title', 'text', 'description', 'placeholder', 'caption']
 
-const getPropsFromTypes = (children: any): ComponentInfo | undefined => {
+const getPropsFromTypes = (children: any): ComponentInfo => {
   const getType = (type: Type): any | undefined => {
     if (type.__docgenInfo) {
       return {
@@ -37,8 +37,7 @@ const getPropsFromTypes = (children: any): ComponentInfo | undefined => {
     }
   };
 
-  const componentInfo = getType(children);
-  return componentInfo;
+  return getType(children);
 };
 
 const getComponentsFromProps = (props: any, children: any) => {

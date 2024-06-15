@@ -1,19 +1,13 @@
-export type EnumType = {
-  name: 'enum';
-  value: { value: string }[];
-};
-
-export type BooleanType = {
-  name: 'boolean';
-};
-
-export type ObjectType = {
-  name: string;
-};
-
 export type ElementType = {
   name: string;
-  type: EnumType | BooleanType | ObjectType;
+  type: {
+    name: string;
+    value: string[];
+  }
+  defaultValue: {
+    value: string;
+  };
+  required: boolean;
 };
 
 export interface ResultObject {
@@ -52,6 +46,6 @@ export interface StoryBuilderProps {
   children: React.ReactElement;
   display?: DisplayOptions;
   isDarkBackground?: boolean;
-  isChildrenDisabled?: boolean;
   templateFit?: 'contain' | 'fill';
 }
+

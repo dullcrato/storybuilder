@@ -1,1 +1,1 @@
-export { default as StoryBuilder } from "./components/StoryBuilder";
+export { default as StoryBuilder } from "./StoryBuilder";

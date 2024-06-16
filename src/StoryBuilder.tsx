@@ -1,10 +1,7 @@
 import React from 'react';
-import {Demo, SourceDemo, PropsTable, Toolbar, ErrorBoundary} from './StoryBuilderSections';
-import {useCollapse} from 'react-collapsed';
+import {Demo, PropsTable, ErrorBoundary} from './StoryBuilderSections';
 import {ComponentInfo, StoryBuilderProps, Type} from './utils';
 import classNames from 'classnames';
-
-import './StoryBuilder.scss';
 
 const STYLE_NAMESPACE = 'vcp-story-builder';
 const DEFAULT_KEYS = ['label', 'title', 'text', 'description', 'placeholder', 'caption']
@@ -75,28 +72,22 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({
         >
           <h1>{name}</h1>
           {components?.map((item: any, i: any) => {
-            const [isDarkMode, setIsDarkMode] = React.useState(isDarkBackground)
-            const {getCollapseProps, getToggleProps, isExpanded} = useCollapse({duration: 0});
             return (
-              <div key={i}>
-                <div>
-                  <h3>prop: {props[i][0]}</h3>
-                  <h6>type: {props[i][1]}</h6>
+              <div key={i} className={classNames(`${STYLE_NAMESPACE}__description`)}>
+                <div className={classNames(`${STYLE_NAMESPACE}__description-title`)}>
+                  <h2 className={classNames(`${STYLE_NAMESPACE}__description-title-font`)}>Prop: {props[i][0]}</h2>
+                  <span className={classNames(`${STYLE_NAMESPACE}__description-description`)}>
+                    Type: {Array.isArray(props[i][1])
+                      ? props[i][1].map((item: any) =>
+                        <code className={classNames(`${STYLE_NAMESPACE}__description-prop`)}>{item}</code>)
+                      : <code className={classNames(`${STYLE_NAMESPACE}__description-prop`)}>{props[i][1]}</code>}
+                  </span>
                 </div>
                 <Demo
                   element={item}
-                  isDarkMode={isDarkMode}
+                  isDarkBackground={isDarkBackground}
                   display={display}
                 />
-                <Toolbar
-                  isExpanded={isExpanded}
-                  isDarkMode={isDarkMode}
-                  setIsDarkMode={setIsDarkMode}
-                  getToggleProps={getToggleProps}
-                />
-                <div {...getCollapseProps()}>
-                  <SourceDemo element={item} />
-                </div>
               </div>
             )
           })}
@@ -107,4 +98,4 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({
   );
 };
 
-export default React.memo(StoryBuilder);
+export default StoryBuilder;

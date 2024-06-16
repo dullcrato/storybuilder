@@ -1,5 +1,4 @@
 import React from 'react';
-import { Table } from '@storybook/components';
 
 interface TableColumn {
   id: string;
@@ -15,7 +14,7 @@ const Columns: TableColumn[] = [
 
 const PropsTable: React.FC<any> = ({ componentProps = [] }) => {
   return (
-    <Table className="table">
+    <table className="table">
       <thead>
         <tr>{Columns.map(({ id, title }) => <th key={id}>{title}</th>)}</tr>
       </thead>
@@ -28,7 +27,7 @@ const PropsTable: React.FC<any> = ({ componentProps = [] }) => {
           </tr>
         ))}
       </tbody>
-    </Table>
+    </table>
   )
 }
 

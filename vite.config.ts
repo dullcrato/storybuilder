@@ -34,4 +34,14 @@ export default defineConfig({
   //dts() generates TypeScript declaration files (*.d.ts)
   //during the build.
   plugins: [react(), dts()],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        includePaths: ['node_modules']
+      }
+    }
+  },
+  // esbuild: {
+  //   jsxInject: `import React from 'react'`
+  // }
 });

@@ -1,7 +1,7 @@
 {
   "name": "automatic-storybuilder-template",
   "private": false,
-  "version": "0.0.23",
+  "version": "0.0.26",
   "type": "module",
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "dist/index.umd.js",

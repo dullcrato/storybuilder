@@ -21,6 +21,7 @@ const ActionButton: React.FC<ButtonProps> = ({
   size = 'medium',
   onClick,
   isDisabled,
+  isLink
 }) => {
   return (
     <>
@@ -34,7 +35,7 @@ const ActionButton: React.FC<ButtonProps> = ({
         border: buttonStyle === 'outline' ? '1px solid black' : 'none',
         width: size === 'small' ? '100px' : size === 'medium' ? '200px' : '300px',
         height: size === 'small' ? '30px' : size === 'medium' ? '40px' : '50px',
-        borderRadius: '4px',
+        borderRadius: isLink ? '15px' : '4px',
         opacity: isDisabled ? 0.5 : 1,
       }}
       >

@@ -1,9 +1,9 @@
 import React from 'react';
-import {Demo, PropsTable, ErrorBoundary} from './StoryBuilderSections';
+import {Table, ErrorBoundary} from './Components';
 import {ComponentInfo, StoryBuilderProps, Type} from './utils';
 import classNames from 'classnames';
 
-const STYLE_NAMESPACE = 'vcp-story-builder';
+const STYLE_NAMESPACE = 'vcp-storybuilder';
 const DEFAULT_KEYS = ['label', 'title', 'text', 'description', 'placeholder', 'caption']
 
 const getPropsFromTypes = (children: any): ComponentInfo => {
@@ -56,7 +56,6 @@ const getComponentsFromProps = (props: any, children: any) => {
 const StoryBuilder: React.FC<StoryBuilderProps> = ({
   children,
   display = 'flex',
-  isDarkBackground = false,
   templateFit
 }) => {
   const {name, props} = getPropsFromTypes(children) as any;
@@ -71,27 +70,26 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({
           )}
         >
           <h1>{name}</h1>
-          {components?.map((item: any, i: any) => {
-            return (
-              <div key={i} className={classNames(`${STYLE_NAMESPACE}__description`)}>
-                <div className={classNames(`${STYLE_NAMESPACE}__description-title`)}>
-                  <h2 className={classNames(`${STYLE_NAMESPACE}__description-title-font`)}>Prop: {props[i][0]}</h2>
-                  <span className={classNames(`${STYLE_NAMESPACE}__description-description`)}>
-                    Type: {Array.isArray(props[i][1])
-                      ? props[i][1].map((item: any) =>
-                        <code className={classNames(`${STYLE_NAMESPACE}__description-prop`)}>{item}</code>)
-                      : <code className={classNames(`${STYLE_NAMESPACE}__description-prop`)}>{props[i][1]}</code>}
-                  </span>
-                </div>
-                <Demo
-                  element={item}
-                  isDarkBackground={isDarkBackground}
-                  display={display}
-                />
+          {components?.map((item: any, i: any) => (
+            <div key={i} className={classNames(`${STYLE_NAMESPACE}__description`)}>
+              <div className={classNames(`${STYLE_NAMESPACE}__description-title`)}>
+                <h2 className={classNames(`${STYLE_NAMESPACE}__description-title-font`)}>Prop: {props[i][0]}</h2>
+                <span className={classNames(`${STYLE_NAMESPACE}__description-description`)}>
+                  Type: {Array.isArray(props[i][1])
+                    ? props[i][1].map((item: any) =>
+                      <code key={item} className={classNames(`${STYLE_NAMESPACE}__description-prop`)}>{item}</code>)
+                    : <code key={props[i][1]} className={classNames(`${STYLE_NAMESPACE}__description-prop`)}>{props[i][1]}</code>}
+                </span>
               </div>
-            )
-          })}
-          {!components ? children : <PropsTable componentProps={props} />}
+              <div className={`${STYLE_NAMESPACE}__components`}>
+                <div className={`${STYLE_NAMESPACE}__components-${display}`} style={{flexWrap: item.length > 5 ? 'wrap' : 'nowrap'}}>
+                  {item}
+                </div>
+              </div>
+              <div className={`header ${false ? 'header--expanded' : ''}`} />
+            </div>
+          ))}
+          {!components ? children : <Table componentProps={props} />}
         </div>
       </ErrorBoundary>
     </div>

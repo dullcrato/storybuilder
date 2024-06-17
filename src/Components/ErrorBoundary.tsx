@@ -1,6 +1,6 @@
 import React from 'react';
 
-const STYLE_NAMESPACE = 'vcp-story-builder';
+const STYLE_NAMESPACE = 'vcp-storybuilder';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;

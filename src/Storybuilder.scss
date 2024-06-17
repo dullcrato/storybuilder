@@ -1,4 +1,4 @@
-$namespace: vcp-story-builder;
+$namespace: vcp-storybuilder;
 
 .#{$namespace}-container {
   display: flex;
@@ -15,8 +15,6 @@ $namespace: vcp-story-builder;
   overflow: hidden;
 
   h2 {
-    // font-weight: 500;
-    // font-size: 28px;
     letter-spacing: -0.7px;
     padding: 0;
     cursor: text;
@@ -29,27 +27,10 @@ $namespace: vcp-story-builder;
     border-bottom: none;
   }
 
-  // h1, h3, h6 {
-  //   padding: 0;
-  //   position: relative;
-  //   color: #2E3438;
-  //   font-weight: 700;
-  //   margin: 20px 0 8px;
-  // }
-
   h1 {
     
     font-size: 36px;
   }
-
-  // h3 {
-  //   font-size: 20px;
-  // }
-
-  // h6 {
-  //   font-size: 14px;
-  //   color: #5C6870;
-  // }
 
   &.#{$namespace}-fill {
     width: 100%;
@@ -75,11 +56,6 @@ $namespace: vcp-story-builder;
       display: flex;
       gap: 8px;
       align-items: center;
-  
-      .#{$namespace}__description-description-props {
-        display: flex;
-        gap: 0 6px;
-      }
     }
 
     .#{$namespace}__description-prop {
@@ -90,6 +66,13 @@ $namespace: vcp-story-builder;
       border: 1px solid #dae2ed;
       font-size: 0.8125rem;
       display: inline-block;
+    }
+
+    .#{$namespace}__description-description {
+      margin: 4px 0 0;
+      display: flex;
+      gap: 8px;
+      align-items: center;
     }
   }
 
@@ -140,10 +123,6 @@ $namespace: vcp-story-builder;
   .#{$namespace}__components-dark {
     background-color: #121b4e;
   }
-
-  .vcp-ui-wizard__wrap {
-    flex-wrap: wrap;
-  }
 }
 
 .#{$namespace}__error-message {
@@ -169,23 +148,12 @@ $namespace: vcp-story-builder;
       display: flex;
     }
 
-    .error-message-title {
-      margin-right: 20px;
-      height: 100%;
-    }
-
     .error-message-details {
       display: flex;
       flex-direction: column;
       gap: 14px;
       padding-left: 22px;
       border-left: 1px solid #696f89;
-    }
-
-    .section-details {
-      display: flex;
-      gap: 4px;
-      align-items: center;
     }
   }
 }

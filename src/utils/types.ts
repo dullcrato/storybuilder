@@ -45,7 +45,6 @@ export type DisplayOptions =
 export interface StoryBuilderProps {
   children: React.ReactElement;
   display?: DisplayOptions;
-  isDarkBackground?: boolean;
   templateFit?: 'contain' | 'fill';
 }
 

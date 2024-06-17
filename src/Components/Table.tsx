@@ -12,7 +12,7 @@ const Columns: TableColumn[] = [
   { id: 'default', title: 'Default', style: 'h4' },
 ];
 
-const PropsTable: React.FC<any> = ({ componentProps = [] }) => {
+const Table: React.FC<any> = ({ componentProps = [] }) => {
   return (
     <table className="table">
       <thead>
@@ -31,4 +31,4 @@ const PropsTable: React.FC<any> = ({ componentProps = [] }) => {
   )
 }
 
-export default PropsTable;
+export default Table;

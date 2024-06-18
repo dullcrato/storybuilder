@@ -70,10 +70,11 @@ const getStory = (children: React.ReactElement, strings: {[key: string]: string[
 
 const StoryBuilder: React.FC<StoryBuilderProps> = ({
   children,
-  display = 'flex',
+  display = 'row',
   strings = {},
   style,
-  inject = []
+  inject = [],
+  darkMode = false
 }) => {
   const {props, name} = getStory(children, strings)
   const render = props?.concat(inject)
@@ -90,8 +91,8 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({
                 Type: {prop.types.map((type: string) => <code key={type} className={classNames(`${STYLE_NAMESPACE}-story-props-types-type`)}>{type}</code>)}
               </span>
             </div>
-            <div className={`${STYLE_NAMESPACE}-story-components`}>
-              <div className={`${STYLE_NAMESPACE}-story-components-${display}`} style={{ flexWrap: prop.components.length > 5 ? 'wrap' : 'nowrap', ...style }}>
+            <div className={`${STYLE_NAMESPACE}-story-components`} style={{backgroundColor: darkMode ? '#121B4E' : '#FFFFFF'}}>
+              <div className={`${STYLE_NAMESPACE}-story-components-${display}`} style={{flexWrap: prop.components.length > 5 ? 'wrap' : 'nowrap', ...style}}>
                 {prop.components}
               </div>
             </div>

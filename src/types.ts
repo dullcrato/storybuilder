@@ -17,9 +17,9 @@ export type __docgenInfoChildrenType = {
 };
 
 export type DisplayOptions =
-  | 'flex'
+  | 'row'
   | 'block'
-  | 'flex-column'
+  | 'column'
   | 'grid-column'
   | 'grid-row'
   | 'contents';
@@ -38,6 +38,7 @@ export interface StoryBuilderProps {
   strings?: {[key: string]: string[] | boolean};
   style?: React.CSSProperties;
   inject?: InjectType[];
+  darkMode?: boolean;
 }
 
 export interface TableColumn {

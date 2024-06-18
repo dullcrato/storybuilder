@@ -5,10 +5,13 @@ import Storybuilder from '../Storybuilder';
 <Meta title='Example/Header'/>
 
 <Storybuilder
-    display='column'
-    mocks={{
-        user: [{name: 'John Doe'}, undefined]
-    }}
+  display='column'
+  inject={{
+    components: [<Header key={2} />, <Header key={1} user={{name: "Jhon Doe"}} />],
+    prop: 'user',
+    required: false,
+    types: ['{name: string | undefined}']
+  }}
 >
-    <Header />
+  <Header />
 </Storybuilder>

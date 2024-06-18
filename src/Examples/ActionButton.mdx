@@ -5,11 +5,19 @@ import Storybuilder from '../Storybuilder';
 <Meta title="Example/ActionButton"/>
 
 <Storybuilder
-    strings={{
-        size: "small",
-        text: "this"
-    }}
+  strings={{
+    size: "small",
+    text: "this"
+  }}
+  inject={[
+    {
+      components: <ActionButton></ActionButton>,
+      prop: "size",
+      required: false,
+      types: ["string"],
+    }
+  ]}
 >
-    <ActionButton size="large" isLink={false} text="this"  >
-        </ActionButton >
+<ActionButton size="large" isLink={false} text="this"  >
+  </ActionButton >
 </Storybuilder>

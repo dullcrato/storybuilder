@@ -1,150 +1,88 @@
 import React from 'react';
 import classNames from 'classnames';
+import {Columns, PropInfo, Story, StoryBuilderProps, __docgenInfoChildrenType} from './types';
 
 const STYLE_NAMESPACE = 'vcp-storybuilder';
 const DEFAULT_KEYS = ['label', 'title', 'text', 'description', 'placeholder', 'caption']
 
-export type ElementType = {
-  name: string;
-  type: {
-    name: string;
-    value: string[];
-  }
-  defaultValue: {
-    value: string;
-  };
-  required: boolean;
-};
-
-export interface ResultObject {
-  [key: string]: string[];
-}
-
-export interface ComponentInfo {
-  displayName: string;
-  props: {
-    [key: string]: ElementType;
-  };
-}
-
-export type Type = {
-  __docgenInfo?: ComponentInfo;
-  type?: Type;
-  render?: {
-    displayName: string;
-    __docgenInfo?: ComponentInfo;
-  };
-};
-
-export interface Component {
-  type: Type;
-}
-
-export type DisplayOptions =
-  | 'flex'
-  | 'block'
-  | 'flex-column'
-  | 'grid-column'
-  | 'grid-row'
-  | 'contents';
-
-export interface StoryBuilderProps {
-  children: React.ReactElement;
-  display?: DisplayOptions;
-  templateFit?: 'contain' | 'fill';
-  strings?: any
-  style?: React.CSSProperties;
-}
-
-interface TableProps {
-  name: string;
-  props: [string, string[], string, boolean][];
-}
-
-interface TableColumn {
-  id: string;
-  title: string;
-  style: string;
-}
-
-const Columns: TableColumn[] = [
-  { id: 'prop', title: 'Prop', style: 'h4' },
-  { id: 'type', title: 'Type', style: 'h4' },
-  { id: 'default', title: 'Default', style: 'h4' },
-];
-
-const getStory = (children: any, strings: any): TableProps => {
-  const getType = (type: Type): any | undefined => {
+const getStory = (children: React.ReactElement, strings: {[key: string]: string[] | boolean}) => {
+  const getType = (type: __docgenInfoChildrenType): Story => {
     if (type.__docgenInfo) {
-      const booleans: any = {
+      const booleans: PropInfo = {
         components: [],
-        prop: ['boolean'],
+        prop: 'boolean',
         types: [],
         defaultValue: '',
-        required: false
-      }
-
-      const childrenKey = Object.keys(type.__docgenInfo.props).find((element: any) => Object.values(DEFAULT_KEYS).includes(element)) || 'children';
-      const renderProp = (value: any) => children.props['children'] ? { [childrenKey]: value, children: children.props['children'] } : { [childrenKey]: value }
+        required: false,
+      };
+      
+      const childrenKey = Object.keys(type.__docgenInfo.props).find(element => Object.values(DEFAULT_KEYS).includes(element)) || 'children';
       return {
         name: type.__docgenInfo.displayName,
-        props: Object.entries(type.__docgenInfo.props).map(([key, {type, defaultValue, required}]: [string, any]) => {  
+        props: Object.entries(type.__docgenInfo.props).reduce((acc, [key, {type, defaultValue, required}]) => {
           switch (type.name) {
             case 'enum':
-              return {
-                components: type.value?.map(({ value }: any) => React.cloneElement(
+              console.log(type)
+              acc.push({
+                components: type.value?.map(({value}) => React.cloneElement(
                   children,
-                  {[key]: value.replace(/"/g, ''), key: value, ...renderProp(value.replace(/"/g, '')) }
+                  {[key]: value.replace(/"/g, ''), key: value, [childrenKey]: value.replace(/"/g, '')}
                 )),
                 prop: key,
-                types: type.value.map(({ value }: any) => value.replace(/"/g, '')),
+                types: type.value.map(({value}) => value.replace(/"/g, '')),
                 defaultValue: defaultValue?.value,
                 required
-              }
+              });
+              break;
             case 'string':
-              if (strings[key] === false) {
-                return;
+              if (strings[key] !== false) {
+                acc.push({
+                  components: React.cloneElement(
+                    children,
+                    {[key]: strings[key] || key, key, [childrenKey]: strings[key] || key}
+                  ),
+                  prop: key,
+                  types: ['string'],
+                  defaultValue: defaultValue?.value,
+                  required
+                });
               }
-              return {
-                components: React.cloneElement(children, {[key]: strings[key] || key, key, ...renderProp(strings[key] || key)}),
-                prop: key,
-                types: ['string'],
-                defaultValue: defaultValue?.value,
-                required
-              }
+              break;
             case 'boolean':
-              booleans.components.push(React.cloneElement(children, {[key]: key, key, ...renderProp(key)}))
-              booleans.types.push(key)
+              booleans.components.push(React.cloneElement(children, {[key]: key, key, [childrenKey]: key}));
+              booleans.types.push(key);
               break;
           }
-        }).concat(booleans.components.length && [booleans]).filter(Boolean)
-      }
+          return acc;
+        }, [] as any[]).concat(booleans.components.length ? [booleans] : [])
+      };
     } else if (type.type) {
       return getType(type.type);
     } else if (type.render) {
       return getType(type.render);
     } else {
-      return [];
+      return [] as any;
     }
   };
 
-  return getType(children);
+  return getType(children as __docgenInfoChildrenType);
 };
-
 
 const StoryBuilder: React.FC<StoryBuilderProps> = ({
   children,
   display = 'flex',
   strings = {},
-  style
+  style,
+  inject = []
 }) => {
-  const story = getStory(children, strings)
+  const {props, name} = getStory(children, strings)
+  const render = props?.concat(inject)
 
   return (
     <div className={STYLE_NAMESPACE}>
       <div className={`${STYLE_NAMESPACE}-container`}>
-        <h1>{story.name}</h1>
-        {story.props?.length ? story.props.map((prop: any, i: number) => (
+        <h1>{name}</h1>
+        {render?.length ? render?.map((prop: PropInfo, i: number) => (
           <div key={i} className={classNames(`${STYLE_NAMESPACE}-story`)}>
             <div className={classNames(`${STYLE_NAMESPACE}-story-props`)}>
               <h2 className={classNames(`${STYLE_NAMESPACE}-story-props-prop`)}>Prop: {prop.prop}</h2>
@@ -153,20 +91,20 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({
               </span>
             </div>
             <div className={`${STYLE_NAMESPACE}-story-components`}>
-              <div className={`${STYLE_NAMESPACE}-story-components-${display}`} style={{flexWrap: prop.components.length > 5 ? 'wrap' : 'nowrap', ...style}}>
+              <div className={`${STYLE_NAMESPACE}-story-components-${display}`} style={{ flexWrap: prop.components.length > 5 ? 'wrap' : 'nowrap', ...style }}>
                 {prop.components}
               </div>
             </div>
             <div className={`${STYLE_NAMESPACE}-story-toolbar`} />
           </div>
         )) : children}
-        {story.props &&
+        {render &&
           <table className={`${STYLE_NAMESPACE}-table`}>
             <thead>
-              <tr>{Columns.map(({ id, title }) => <th key={id}>{title}</th>)}</tr>
+              <tr>{Columns.map(({id, title}) => <th key={id}>{title}</th>)}</tr>
             </thead>
             <tbody>
-              {story.props?.map((prop: any, i: number) => (
+              {render?.map((prop: PropInfo, i: number) => (
                 <tr key={i}>
                   <td><h6>{prop.prop}{prop.required && '*'}</h6></td>
                   <td>{prop.types.map((type: string) => <h6 key={type} style={{ margin: "3px 0" }}>{type}</h6>)}</td>
